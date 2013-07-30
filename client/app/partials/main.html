@@ -24,6 +24,7 @@
 			<ul>
 				<li ng-repeat="item in items">
 					{{item.content}}
+					<a href="#" ng-click="removeItem(item)">[delete]</a>
 				</li>
 			</ul>
 		</div>

@@ -7,13 +7,22 @@ angular.module('todo.controllers', []).
 		delete $http.defaults.headers.common['X-Requested-With'];
 		
 		var baseItems = Restangular.all('items');
-		$scope.items = baseItems.getList();
+		baseItems.getList().then(function(items) {
+			$scope.items = items;
+		});
 
 		$scope.addItem = function(item) {
 			if (item) {
-				$scope.items.push(angular.copy(item));
-				baseItems.post(item);
-				$("#item-content").val("");
+				baseItems.post(item).then(function(item) {
+					$scope.items.push(item);
+					$("#item-content").val("");
+				});
+			}
+		}
+
+		$scope.removeItem = function(item) {
+			if (item) {
+				item.remove();
 			}
 		}
 
