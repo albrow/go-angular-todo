@@ -2,10 +2,8 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', []).
-  controller('MyCtrl1', [function() {
-
-  }])
-  .controller('MyCtrl2', [function() {
-
-  }]);
+angular.module('todo.controllers', []).
+	controller('mainCtrl', [function() {
+		// TODO: fill this in
+	}]
+);
