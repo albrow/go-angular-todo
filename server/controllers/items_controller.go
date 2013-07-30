@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"../models"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/stephenalexbrowne/go-angular-todo/server/models"
 	"github.com/stephenalexbrowne/zoom"
 	"net/http"
 )
@@ -16,9 +16,19 @@ func (*ItemsController) Index(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Println("Called Index()")
 
-	//TODO: implement this
+	items, err := models.FindAllItems()
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 
-	fmt.Fprint(w, `[{"id":"1", "content":"the first thing"}, {"id":"2", "content":"this is the second thing"}]`)
+	itemsJson, err := json.Marshal(items)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	fmt.Fprint(w, string(itemsJson))
 }
 
 func (*ItemsController) Create(w http.ResponseWriter, r *http.Request) {

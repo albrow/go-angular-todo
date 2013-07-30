@@ -1,10 +1,10 @@
 package main
 
 import (
-	"./controllers"
-	"./models"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/stephenalexbrowne/go-angular-todo/server/controllers"
+	"github.com/stephenalexbrowne/go-angular-todo/server/models"
 	"github.com/stephenalexbrowne/zoom"
 	"log"
 	"net/http"

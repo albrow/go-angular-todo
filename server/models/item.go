@@ -1,12 +1,14 @@
 package models
 
 import (
+	"errors"
+	"fmt"
 	"github.com/stephenalexbrowne/zoom"
 )
 
 type Item struct {
-	Id      string
-	Content string
+	Id      string `redis:"-" json:"id"`
+	Content string `redis:"content" json:"content"`
 }
 
 func (p *Item) GetId() string {
@@ -29,4 +31,21 @@ func FindItemById(id string) (*Item, error) {
 	}
 	p := result.(*Item)
 	return p, nil
+}
+
+func FindAllItems() ([]*Item, error) {
+	results, err := zoom.FindAll("item")
+	if err != nil {
+		return nil, err
+	}
+	items := make([]*Item, len(results))
+	for index, result := range results {
+		i, ok := result.(*Item)
+		if !ok {
+			msg := fmt.Sprintf("Couldn't convert %+v to *Item", result)
+			return nil, errors.New(msg)
+		}
+		items[index] = i
+	}
+	return items, nil
 }

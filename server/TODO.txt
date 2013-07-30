@@ -1,2 +1,0 @@
-TODO: create server code using go and my own zoom ORM
-
