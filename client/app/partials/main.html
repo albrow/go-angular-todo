@@ -3,9 +3,11 @@
 		<div class="col-lg-12">
 			<h1>Todo with Go and Angular.js</h1>
 
-			<p>
-				This is a skeleton. I'm just getting started. Check back later.
-			</p>
+			<ul>
+				<li ng-repeat="item in items">
+					{{item.content}}
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>
