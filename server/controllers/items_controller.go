@@ -36,11 +36,16 @@ func (*ItemsController) Create(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Println("Called Create()")
 
-	// get the content from the form data
-	content := r.FormValue("content")
+	decoder := json.NewDecoder(r.Body)
+	var item *models.Item
+	err := decoder.Decode(&item)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 
-	i := models.NewItem(content)
-	err := zoom.Save(i)
+	i := models.NewItem(item.Content)
+	err = zoom.Save(i)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
