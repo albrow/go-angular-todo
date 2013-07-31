@@ -11,7 +11,7 @@
 			<form ng-submit="addItem(item)">
 				<div class="input-group">
 					<span class="input-group-btn">
-						<button class="btn btn-default add-item-button" type="submit">Add</button>
+						<button class="btn btn-default btn-primary add-item-button" type="submit">&plus; Add</button>
 					</span>
 					<input id="item-content-input" name="content" type="text" class="form-control" ng-model="item.content">
 				</div>
@@ -21,8 +21,22 @@
 
 	<div class="row">
 		<div class="col-lg-6 col-offset-3">
+			<div class="item-info">
+				<span class="items-pending">
+					{{(items | undone).length}} items pending
+				</span>
+				<span class="items-completed pull-right">
+					{{(items | done).length}} items completed
+				</span>
+			</div>
 			<ul class="item-list">
-				<li ng-repeat="item in items" ng-class="{new_item: item == currentNewItem}">
+				<li ng-repeat="item in items | undone" ng-class="{new_item: item == currentNewItem}">
+					<input type="checkbox" class="item-checkbox" name="item.done" ng-model="item.done" ng-click="item.put()">
+					<span class="item-content" ng-class="'done-' + item.done">{{item.content}}</span>
+					<a class="pull-right delete-item" href="#" ng-click="removeItem(item)">&times;</a>
+				</li>
+				<br/>
+				<li ng-repeat="item in items | done" ng-class="{new_item: item == currentNewItem}">
 					<input type="checkbox" class="item-checkbox" name="item.done" ng-model="item.done" ng-click="item.put()">
 					<span class="item-content" ng-class="'done-' + item.done">{{item.content}}</span>
 					<a class="pull-right delete-item" href="#" ng-click="removeItem(item)">&times;</a>
