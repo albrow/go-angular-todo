@@ -80,21 +80,45 @@ func (*ItemsController) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = r.ParseForm()
+	// decode the json data
+	decoder := json.NewDecoder(r.Body)
+	postData := make(map[string]*json.RawMessage)
+	err = decoder.Decode(&postData)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
-	}
-	content, ok := r.PostForm["content"]
-	if ok && content[0] != "" && content[0] != "null" {
-		item.Content = content[0]
+		return
 	}
 
+	// for each attribute. first make sure that
+	// it exists in the decoded map. If it does,
+	// parse it and set it.
+	if content, ok := postData["content"]; ok {
+		var contentString string
+		err := json.Unmarshal(*content, &contentString)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		item.Content = contentString
+	}
+	if done, ok := postData["done"]; ok {
+		var doneBool bool
+		err := json.Unmarshal(*done, &doneBool)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		item.Done = doneBool
+	}
+
+	// save the record (may or may not have been modified from above)
 	err = zoom.Save(item)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
+	// convert it to json
 	itemJson, err := json.Marshal(item)
 	if err != nil {
 		http.Error(w, err.Error(), 500)

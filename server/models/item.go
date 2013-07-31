@@ -9,6 +9,7 @@ import (
 type Item struct {
 	Id      string `redis:"-" json:"id"`
 	Content string `redis:"content" json:"content"`
+	Done    bool   `redis:"done" json:"done"`
 }
 
 func (p *Item) GetId() string {
