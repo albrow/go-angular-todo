@@ -7,7 +7,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-lg-4 col-offset-1">
+		<div class="col-lg-4 col-offset-1 add-item-container">
 			<form ng-submit="addItem(item)">
 				<div class="input-group">
 					<span class="input-group-btn">
@@ -20,10 +20,11 @@
 	</div>
 
 	<div class="row">
-		<div class="col-lg-12">
-			<ul>
+		<div class="col-lg-11 col-offset-1">
+			<ul class="item-list">
 				<li ng-repeat="item in items">
-					{{item.content}}
+					<input type="checkbox" name="item.done" ng-model="item.done" ng-click="item.put()">
+					<span ng-class="'done-' + item.done">{{item.content}}</span>
 					<a href="#" ng-click="removeItem(item)">[delete]</a>
 				</li>
 			</ul>

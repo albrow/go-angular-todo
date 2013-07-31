@@ -5,7 +5,7 @@
 angular.module('todo.controllers', []).
 	controller('mainCtrl', ['$scope', '$http', 'Restangular', function($scope, $http, Restangular) {
 		delete $http.defaults.headers.common['X-Requested-With'];
-		
+
 		var baseItems = Restangular.all('items');
 		baseItems.getList().then(function(items) {
 			$scope.items = items;
